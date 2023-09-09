@@ -1,34 +1,46 @@
 package net.etfbl.pj2.terminal;
 
+import net.etfbl.pj2.handler.ProjektniHandler;
 import net.etfbl.pj2.osobe.Putnik;
 import net.etfbl.pj2.vozila.Vozilo;
 
-public abstract class PolicijskiTerminal extends Terminal{
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class PolicijskiTerminal extends Terminal{
 
     @Override
-    public synchronized boolean obradiVozilo(Vozilo vozilo) {
+    public boolean obradiVozilo(Vozilo vozilo) {
+        System.out.println("Vozilo: " + vozilo.getIdVozila());
+        //obrada vozaca
+        try{
+            Thread.sleep(vozilo.getVrijemeObradePutnika());
+        }
+        catch(InterruptedException e){
+            e.printStackTrace();
+        }
         //provjeravamo da li vozac ima ispravan dokument
         if(vozilo.getVozac().getIdentifikacioniDokument().isNeispravan()){
-            try{
-                Thread.sleep(vozilo.getVrijemeObradePutnika());
-            }
-            catch(InterruptedException e){
-                e.printStackTrace();
-            }
+
             vozilo.izbaciVozaca(vozilo.getVozac());
             vozilo.setMozeProciPolicijskiTerminal(false);
             return false;
         }
         //provjeravamo putnike i dokumente
-        for (Putnik putnik :
-                vozilo.getPutnici()) {
+        ArrayList<Putnik> putnici = vozilo.getPutnici();
+        for (Iterator<Putnik> it = putnici.iterator(); it.hasNext();) {
             try{
                 Thread.sleep(vozilo.getVrijemeObradePutnika());
             }
             catch(InterruptedException e){
-                e.printStackTrace(); // TODO: 5.9.2023. dodati logger 
+                Logger.getLogger(ProjektniHandler.class.getName()).log(Level.WARNING, e.fillInStackTrace().toString());
             }
-            if(putnik.getIdentifikacioniDokument().isNeispravan()){
+            Putnik putnik = it.next();
+            if(putnik.getIdentifikacioniDokument().isNeispravan())
+            {
+                it.remove();
                 vozilo.izbaciPutnika(putnik);
             }
         }

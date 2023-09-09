@@ -1,8 +1,9 @@
 package net.etfbl.pj2.osobe.dodaci;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Kofer {
+public class Kofer implements Serializable {
     private boolean imaNedozvoljeneStvari;
 
     public Kofer(){

@@ -3,6 +3,7 @@ package net.etfbl.pj2.terminal;
 import net.etfbl.pj2.vozila.Vozilo;
 
 public abstract class Terminal {
+
     protected boolean moguLicnaVozila;
     protected boolean moguAutobusi;
     protected boolean moguKamioni;
@@ -37,4 +38,10 @@ public abstract class Terminal {
     public boolean isSlobodan() {
         return slobodan;
     }
+
+    public void setSlobodan(boolean slobodan) {
+        this.slobodan = slobodan;
+    }
+
+
 }

@@ -7,31 +7,23 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.etfbl.pj2.handler.ProjektniHandler;
 import net.etfbl.pj2.osobe.*;
-public abstract class Vozilo implements Serializable {
+public abstract class Vozilo extends Thread implements Serializable {
     protected Vozac vozac;
     protected int brojPutnika;
     protected int vrijemeObradePutnika = 0;
     protected ArrayList<Putnik> putnici;
-    protected int id;
-    private static int brojacVozila;
+    protected int idVozila;
+    protected int pozicijaURedu = -1;
+    private static int brojacVozila = 0;
     //flag koji ce se postaviti na false ako vozac nema ispravne dokumente
-    protected boolean mozeProciPolicijskiTerminal = true;
+    protected boolean mozeProciPolicijskiTerminal = false;
+    protected boolean mozeProciCarinskiTerminal = false;
+    protected boolean prosaoGranicu = false;
     private static final File folderKaznjeni = new File("src" + File.separator +"Kaznjeni");
 
-    public static Handler handler;
 
-
-
-    {
-        try {
-
-            handler = new FileHandler("vozilo.log");
-            Logger.getLogger(Vozilo.class.getName()).addHandler(handler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Vozilo(int brojPutnika) {
         this(brojPutnika, false);
@@ -51,7 +43,7 @@ public abstract class Vozilo implements Serializable {
                 this.putnici.add(i, new Putnik());
             }
         }
-        this.id = ++brojacVozila;
+        this.idVozila = ++brojacVozila;
     }
 
     public static int generisiBrojPutnika(int capacity){
@@ -83,12 +75,12 @@ public abstract class Vozilo implements Serializable {
         this.putnici = putnici;
     }
 
-    public int getId() {
-        return id;
+    public int getIdVozila() {
+        return idVozila;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdVozila(int idVozila) {
+        this.idVozila = idVozila;
     }
 
     //metoda koja izbacuje vozaca iz vozila
@@ -110,7 +102,6 @@ public abstract class Vozilo implements Serializable {
         }catch(IOException e){
             Logger.getLogger(Vozilo.class.getName()).log(Level.WARNING, e.fillInStackTrace().toString());
         }
-        putnici.remove(putnik);
     }
 
     private File kreirajFajlKaznjeni(){
@@ -125,7 +116,7 @@ public abstract class Vozilo implements Serializable {
             try{
                 fileKaznjeni.createNewFile();
             }catch (IOException e){
-                Logger.getLogger(Vozilo.class.getName()).log(Level.WARNING, e.fillInStackTrace().toString());
+                Logger.getLogger(ProjektniHandler.class.getName()).log(Level.WARNING, e.fillInStackTrace().toString());
             }
         }
         return fileKaznjeni;
@@ -143,12 +134,28 @@ public abstract class Vozilo implements Serializable {
         this.mozeProciPolicijskiTerminal = mozeProciPolicijskiTerminal;
     }
 
+    public boolean isMozeProciCarinskiTerminal() {
+        return mozeProciCarinskiTerminal;
+    }
+
+    public void setMozeProciCarinskiTerminal(boolean mozeProciCarinskiTerminal) {
+        this.mozeProciCarinskiTerminal = mozeProciCarinskiTerminal;
+    }
+
+    public int getPozicijaURedu() {
+        return pozicijaURedu;
+    }
+
+    public void setPozicijaURedu(int pozicijaURedu) {
+        this.pozicijaURedu = pozicijaURedu;
+    }
+
     @Override
     public String toString() {
         return "Vozilo{" +
                 "vozac=" + vozac +
                 ", brojPutnika=" + brojPutnika +
-                ", id=" + id +
+                ", id=" + idVozila +
                 '}';
     }
 }

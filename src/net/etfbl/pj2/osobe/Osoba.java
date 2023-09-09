@@ -1,9 +1,10 @@
 package net.etfbl.pj2.osobe;
 
+import java.io.Serializable;
 import java.util.Random;
 import net.etfbl.pj2.osobe.dodaci.*;
 
-public abstract class Osoba{
+public abstract class Osoba implements Serializable {
     protected IdentifikacioniDokument identifikacioniDokument;
     protected Kofer kofer; //ako je null nema ga
     protected String ime;
@@ -21,6 +22,11 @@ public abstract class Osoba{
         else {
             kofer = null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return ime;
     }
 
     public IdentifikacioniDokument getIdentifikacioniDokument() {

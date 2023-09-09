@@ -1,8 +1,9 @@
 package net.etfbl.pj2.vozila;
 
 import net.etfbl.pj2.vozila.Vozilo;
+import net.etfbl.pj2.vozila.interfejsi.LicnoVoziloInterfejs;
 
-public class LicnoVozilo extends Vozilo {
+public class LicnoVozilo extends Vozilo implements LicnoVoziloInterfejs {
     private static final int KAPACITET_PUTNIKA = 4;
 
     public LicnoVozilo() {
@@ -15,8 +16,12 @@ public class LicnoVozilo extends Vozilo {
     }
 
     @Override
+    public void run() {
+
+    }
+    @Override
     public String toString(){
-        return "Automobil " + id + "{\nVozac: " + vozac + "\nBroj putnika: " +
+        return "Automobil " + idVozila + "{\nVozac: " + vozac + "\nBroj putnika: " +
                 brojPutnika + "\n}";
     }
 
