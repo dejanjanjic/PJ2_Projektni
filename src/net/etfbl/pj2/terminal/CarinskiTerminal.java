@@ -48,7 +48,8 @@ public class CarinskiTerminal extends Terminal{
             }
             if(kamion.getTeret().getMasa() > kamion.getDeklarisanaMasa()){
                 //izbaci kamion
-                kamion.setMozeProciCarinskiTerminal(false);
+                System.out.println(vozilo + ": IZBACEN!!!!!!!");
+                // TODO: 9.9.2023.  
                 return false;
             }
         }

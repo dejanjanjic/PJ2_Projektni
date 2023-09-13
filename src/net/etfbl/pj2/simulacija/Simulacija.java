@@ -1,10 +1,7 @@
 package net.etfbl.pj2.simulacija;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
@@ -13,7 +10,8 @@ import net.etfbl.pj2.terminal.PolicijskiTerminal;
 import net.etfbl.pj2.vozila.*;
 
 public class Simulacija {
-    public static ArrayBlockingQueue<Vozilo> granicniRed = new ArrayBlockingQueue<Vozilo>(50);
+    public static ArrayBlockingQueue<Vozilo> granicniRed = new ArrayBlockingQueue<>(50);
+    public static ArrayBlockingQueue<Vozilo> carinskiRed = new ArrayBlockingQueue<>(2);
 
     public static PolicijskiTerminal p1 = new PolicijskiTerminal();
     public static PolicijskiTerminal p2 = new PolicijskiTerminal();
@@ -37,8 +35,9 @@ public class Simulacija {
         for (int i = 0; i < BROJ_KAMIONA; i++) {
             granicniRed.add(new Kamion());
         }
-        //postavljamo vozila na nasumicne pozicije
-        //Collections.shuffle(granicniRed);
+//        //postavljamo vozila na nasumicne pozicije
+//        List<Vozilo> list = new ArrayList<>(granicniRed);
+//        Collections.shuffle(list);
         //cuvamo pozicije za svako vozilo
 
         for (Vozilo vozilo :

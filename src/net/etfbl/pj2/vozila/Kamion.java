@@ -34,23 +34,44 @@ public class Kamion extends Vozilo implements KamionInterfejs {
 
     @Override
     public void run() {
+            boolean mozeProciPolicijskiTerminal = false;
+            boolean mozeProciCarinskiTerminal = false;
+            boolean zavrsenaPolicijskaObrada = false;
+            boolean zavrsenaCarinskaObrada = false;
 
-
-            while (true) {
+            while (!zavrsenaPolicijskaObrada) {
 
                 if(Simulacija.granicniRed.size()>0 && Simulacija.granicniRed.peek().getIdVozila() == getIdVozila() && Simulacija.pk.isSlobodan()) {
+                    System.out.println(this + ": usao u policijski terminal!");
                     Simulacija.pk.setSlobodan(false); //zauzimamo policijski terminal
                     Simulacija.granicniRed.poll(); //izlazi iz granicnog reda
 
-                    Simulacija.pk.obradiVozilo(this); //obradjujemo vozilo
+                    mozeProciPolicijskiTerminal = Simulacija.pk.obradiVozilo(this); //obradjujemo vozilo
+                    if(!mozeProciPolicijskiTerminal){
+                        System.out.println("Pao policijsku provjeru!");
+                        Simulacija.pk.setSlobodan(true);
+                    }
                     //zavrsava
-                    mozeProciPolicijskiTerminal = true;
-
-                    break;
+                    zavrsenaPolicijskaObrada = true;
                 }
+            }
+            if(mozeProciPolicijskiTerminal){
+                while(!zavrsenaCarinskaObrada){
 
-
-        }
+                    if(Simulacija.ck.isSlobodan()){
+                        Simulacija.pk.setSlobodan(true);
+                        Simulacija.ck.setSlobodan(false);
+                        System.out.println(this + ": usao u carinski terminal!");
+                        mozeProciCarinskiTerminal = Simulacija.ck.obradiVozilo(this);
+                        if(!mozeProciCarinskiTerminal){
+                            System.out.println("Pao carinsku provjeru!");
+                        }
+                        Simulacija.ck.setSlobodan(true);
+                        zavrsenaCarinskaObrada = true;
+                        // TODO: 9.9.2023. Napraviti logiku za situacije kad vozila ne mogu proci terminal
+                    }
+                }
+            }
     }
 
     public Teret getTeret() {

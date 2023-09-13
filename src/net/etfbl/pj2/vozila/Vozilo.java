@@ -18,8 +18,7 @@ public abstract class Vozilo extends Thread implements Serializable {
     protected int pozicijaURedu = -1;
     private static int brojacVozila = 0;
     //flag koji ce se postaviti na false ako vozac nema ispravne dokumente
-    protected boolean mozeProciPolicijskiTerminal = false;
-    protected boolean mozeProciCarinskiTerminal = false;
+
     protected boolean prosaoGranicu = false;
     private static final File folderKaznjeni = new File("src" + File.separator +"Kaznjeni");
 
@@ -126,21 +125,7 @@ public abstract class Vozilo extends Thread implements Serializable {
         return vrijemeObradePutnika;
     }
 
-    public boolean isMozeProciPolicijskiTerminal() {
-        return mozeProciPolicijskiTerminal;
-    }
 
-    public void setMozeProciPolicijskiTerminal(boolean mozeProciPolicijskiTerminal) {
-        this.mozeProciPolicijskiTerminal = mozeProciPolicijskiTerminal;
-    }
-
-    public boolean isMozeProciCarinskiTerminal() {
-        return mozeProciCarinskiTerminal;
-    }
-
-    public void setMozeProciCarinskiTerminal(boolean mozeProciCarinskiTerminal) {
-        this.mozeProciCarinskiTerminal = mozeProciCarinskiTerminal;
-    }
 
     public int getPozicijaURedu() {
         return pozicijaURedu;

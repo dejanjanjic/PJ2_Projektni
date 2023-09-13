@@ -13,7 +13,7 @@ public class PolicijskiTerminal extends Terminal{
 
     @Override
     public boolean obradiVozilo(Vozilo vozilo) {
-        System.out.println("Vozilo: " + vozilo.getIdVozila());
+
         //obrada vozaca
         try{
             Thread.sleep(vozilo.getVrijemeObradePutnika());
@@ -25,7 +25,6 @@ public class PolicijskiTerminal extends Terminal{
         if(vozilo.getVozac().getIdentifikacioniDokument().isNeispravan()){
 
             vozilo.izbaciVozaca(vozilo.getVozac());
-            vozilo.setMozeProciPolicijskiTerminal(false);
             return false;
         }
         //provjeravamo putnike i dokumente

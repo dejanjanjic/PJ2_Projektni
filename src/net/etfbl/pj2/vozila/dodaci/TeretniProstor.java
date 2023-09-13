@@ -5,7 +5,7 @@ import net.etfbl.pj2.osobe.dodaci.Kofer;
 import java.util.ArrayList;
 
 public class TeretniProstor {
-    private ArrayList<Kofer> koferi;
+    private ArrayList<Kofer> koferi = new ArrayList<>();
 
     public ArrayList<Kofer> getKoferi() {
         return koferi;
