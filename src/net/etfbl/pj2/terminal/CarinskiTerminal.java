@@ -31,7 +31,7 @@ public class CarinskiTerminal extends Terminal{
                     Logger.getLogger(ProjektniHandler.class.getName()).log(Level.WARNING, e.fillInStackTrace().toString());
                 }
                 Putnik putnik = it.next();
-                if(putnik.getKofer().isImaNedozvoljeneStvari()){
+                if(putnik.getKofer() != null && putnik.getKofer().isImaNedozvoljeneStvari()){
                     vozilo.izbaciPutnika(putnik);
                     it.remove();
                 }

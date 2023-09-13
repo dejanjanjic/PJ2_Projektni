@@ -1,11 +1,14 @@
 package net.etfbl.pj2.vozila;
 
+import net.etfbl.pj2.handler.ProjektniHandler;
 import net.etfbl.pj2.simulacija.Simulacija;
 import net.etfbl.pj2.vozila.dodaci.CarinskaDokumentacija;
 import net.etfbl.pj2.vozila.dodaci.Teret;
 import net.etfbl.pj2.vozila.interfejsi.KamionInterfejs;
 
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Kamion extends Vozilo implements KamionInterfejs {
     private Teret teret;
@@ -13,6 +16,8 @@ public class Kamion extends Vozilo implements KamionInterfejs {
     private boolean nedozvoljenaMasa;
     private CarinskaDokumentacija carinskaDokumentacija;
     private boolean trebaCarinskaDokumentacija;
+
+    private static Object lock1 = new Object();
 
     private static final int KAPACITET_PUTNIKA = 2;
     private static final int MAX_MASA_DEKLARISANA = 97;
@@ -39,38 +44,56 @@ public class Kamion extends Vozilo implements KamionInterfejs {
             boolean zavrsenaPolicijskaObrada = false;
             boolean zavrsenaCarinskaObrada = false;
 
+
+
             while (!zavrsenaPolicijskaObrada) {
 
-                if(Simulacija.granicniRed.size()>0 && Simulacija.granicniRed.peek().getIdVozila() == getIdVozila() && Simulacija.pk.isSlobodan()) {
-                    System.out.println(this + ": usao u policijski terminal!");
-                    Simulacija.pk.setSlobodan(false); //zauzimamo policijski terminal
-                    Simulacija.granicniRed.poll(); //izlazi iz granicnog reda
+                    if (Simulacija.granicniRed.size() > 0 && Simulacija.granicniRed.peek() == this && Simulacija.pk.isSlobodan()) {
 
-                    mozeProciPolicijskiTerminal = Simulacija.pk.obradiVozilo(this); //obradjujemo vozilo
-                    if(!mozeProciPolicijskiTerminal){
-                        System.out.println("Pao policijsku provjeru!");
-                        Simulacija.pk.setSlobodan(true);
+                        System.out.println(this + ": usao u policijski terminal!");
+
+                        Simulacija.pk.setSlobodan(false); //zauzimamo policijski terminal
+
+                        Simulacija.granicniRed.poll(); //izlazi iz granicnog reda
+
+                        mozeProciPolicijskiTerminal = Simulacija.pk.obradiVozilo(this); //obradjujemo vozilo
+                        if (!mozeProciPolicijskiTerminal) {
+                            System.out.println("!!!!!!!!!!!!!!!Pao policijsku provjeru!!!!!!!!!!!!!!!!!!!!!!");
+                            Simulacija.pk.setSlobodan(true);
+                        }
+                        //zavrsava
+                        zavrsenaPolicijskaObrada = true;
+                        System.out.println(this + ": izasao iz policijskog terminala!");
+
                     }
-                    //zavrsava
-                    zavrsenaPolicijskaObrada = true;
-                }
+
+
             }
+
             if(mozeProciPolicijskiTerminal){
                 while(!zavrsenaCarinskaObrada){
 
-                    if(Simulacija.ck.isSlobodan()){
-                        Simulacija.pk.setSlobodan(true);
-                        Simulacija.ck.setSlobodan(false);
-                        System.out.println(this + ": usao u carinski terminal!");
-                        mozeProciCarinskiTerminal = Simulacija.ck.obradiVozilo(this);
-                        if(!mozeProciCarinskiTerminal){
-                            System.out.println("Pao carinsku provjeru!");
+                    //synchronized (this) {
+                        if (Simulacija.ck.isSlobodan()) {
+                            Simulacija.ck.setSlobodan(false);
+                            System.out.println(this + ": usao u carinski terminal!");
+                            Simulacija.pk.setSlobodan(true);
+
+                            mozeProciCarinskiTerminal = Simulacija.ck.obradiVozilo(this);
+                            if (!mozeProciCarinskiTerminal) {
+                                System.out.println("Pao carinsku provjeru!");
+                            }
+                            System.out.println(this + ": izasao iz carinskog terminala!");
+
+                            Simulacija.ck.setSlobodan(true);
+                            zavrsenaCarinskaObrada = true;
+                            // TODO: 9.9.2023. Napraviti logiku za situacije kad vozila ne mogu proci terminal
                         }
-                        Simulacija.ck.setSlobodan(true);
-                        zavrsenaCarinskaObrada = true;
-                        // TODO: 9.9.2023. Napraviti logiku za situacije kad vozila ne mogu proci terminal
-                    }
+                    //}
                 }
+            }
+            else{
+                System.out.println(this + ": IZASAO SA GRANICE!");
             }
     }
 

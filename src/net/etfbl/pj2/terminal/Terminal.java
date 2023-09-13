@@ -7,7 +7,7 @@ public abstract class Terminal {
     protected boolean moguLicnaVozila;
     protected boolean moguAutobusi;
     protected boolean moguKamioni;
-    protected boolean slobodan = true;
+    protected volatile boolean slobodan = true;
 
     public Terminal(){
         moguAutobusi = false;

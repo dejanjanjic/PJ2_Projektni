@@ -19,7 +19,7 @@ public class PolicijskiTerminal extends Terminal{
             Thread.sleep(vozilo.getVrijemeObradePutnika());
         }
         catch(InterruptedException e){
-            e.printStackTrace();
+            Logger.getLogger(ProjektniHandler.class.getName()).log(Level.WARNING, e.fillInStackTrace().toString());
         }
         //provjeravamo da li vozac ima ispravan dokument
         if(vozilo.getVozac().getIdentifikacioniDokument().isNeispravan()){

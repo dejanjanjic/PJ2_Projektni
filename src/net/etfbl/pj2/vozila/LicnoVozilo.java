@@ -27,10 +27,10 @@ public class LicnoVozilo extends Vozilo implements LicnoVoziloInterfejs {
 
         while (!zavrsenaPolicijskaObrada) {
 
-            if(Simulacija.granicniRed.size()>0 && Simulacija.granicniRed.peek().getIdVozila() == getIdVozila()) {
+            if(Simulacija.granicniRed.size()>0 && Simulacija.granicniRed.peek() == this) {
                 if(Simulacija.p1.isSlobodan()){
                     bioNaP1 = true;
-                    System.out.println(this + ": usao u policijski terminal!");
+                    System.out.println(this + ": usao u policijski terminal 1!");
                     Simulacija.p1.setSlobodan(false); //zauzimamo policijski terminal
                     Simulacija.granicniRed.poll(); //izlazi iz granicnog reda
 
@@ -46,7 +46,7 @@ public class LicnoVozilo extends Vozilo implements LicnoVoziloInterfejs {
 
                 } else if (Simulacija.p2.isSlobodan()) {
                     bioNaP2 = true;
-                    System.out.println(this + ": usao u policijski terminal!");
+                    System.out.println(this + ": usao u policijski terminal 2!");
                     Simulacija.p2.setSlobodan(false); //zauzimamo policijski terminal
                     Simulacija.granicniRed.poll(); //izlazi iz granicnog reda
 
@@ -66,14 +66,16 @@ public class LicnoVozilo extends Vozilo implements LicnoVoziloInterfejs {
         if(mozeProciPolicijskiTerminal){
             while(!zavrsenaCarinskaObrada){
                 if(Simulacija.c1.isSlobodan() && Simulacija.carinskiRed.size()>0
-                        && Simulacija.carinskiRed.peek().getIdVozila() == getIdVozila()){
+                        && Simulacija.carinskiRed.peek() == this){
+                    Simulacija.c1.setSlobodan(false);
+                    Simulacija.carinskiRed.poll();
                     if(bioNaP1){
                         Simulacija.p1.setSlobodan(true);
                     } else if (bioNaP2) {
                         Simulacija.p2.setSlobodan(true);
                     }
-                    Simulacija.c1.setSlobodan(false);
-                    Simulacija.carinskiRed.poll();
+
+
                     System.out.println(this + ": usao u carinski terminal!");
                     mozeProciCarinskiTerminal = Simulacija.c1.obradiVozilo(this);
                     if(!mozeProciCarinskiTerminal){
