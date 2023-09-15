@@ -17,7 +17,6 @@ public class Kamion extends Vozilo implements KamionInterfejs {
     private CarinskaDokumentacija carinskaDokumentacija;
     private boolean trebaCarinskaDokumentacija;
 
-    private static Object lock1 = new Object();
 
     private static final int KAPACITET_PUTNIKA = 2;
     private static final int MAX_MASA_DEKLARISANA = 97;
@@ -53,6 +52,7 @@ public class Kamion extends Vozilo implements KamionInterfejs {
                         System.out.println(this + ": usao u policijski terminal!");
 
                         Simulacija.pk.setSlobodan(false); //zauzimamo policijski terminal
+
 
                         Simulacija.granicniRed.poll(); //izlazi iz granicnog reda
 

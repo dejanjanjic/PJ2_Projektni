@@ -45,12 +45,12 @@ public class CarinskiTerminal extends Terminal{
             Kamion kamion = (Kamion) vozilo;
             if(kamion.isTrebaCarinskaDokumentacija()){
                 kamion.setCarinskaDokumentacija(new CarinskaDokumentacija());
-            }
-            if(kamion.getTeret().getMasa() > kamion.getDeklarisanaMasa()){
-                //izbaci kamion
-                System.out.println(vozilo + ": IZBACEN!!!!!!!");
-                // TODO: 9.9.2023.  
-                return false;
+                if(kamion.getTeret().getMasa() > kamion.getDeklarisanaMasa()){
+                    //izbaci kamion
+                    System.out.println(vozilo + ": IZBACEN!!!!!!!");
+                    // TODO: 9.9.2023.
+                    return false;
+                }
             }
         }
         return true;

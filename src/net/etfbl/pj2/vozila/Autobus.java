@@ -46,9 +46,12 @@ public class Autobus extends Vozilo implements AutobusInterfejs {
                         System.out.println("Pao policijsku provjeru!");
                         Simulacija.p1.setSlobodan(true);
                     }
+                    else{
+                        Simulacija.carinskiRed.add(this);
+                    }
                     //zavrsava
                     //Simulacija.p1.setSlobodan(true); //izbrisati
-                    Simulacija.carinskiRed.add(this);
+
                     zavrsenaPolicijskaObrada = true;
 
                 } else if (Simulacija.p2.isSlobodan()) {
@@ -62,9 +65,12 @@ public class Autobus extends Vozilo implements AutobusInterfejs {
                         System.out.println("Pao policijsku provjeru!");
                         Simulacija.p2.setSlobodan(true);
                     }
+                    else {
+                        Simulacija.carinskiRed.add(this);
+                    }
                     //zavrsava
                     //Simulacija.p2.setSlobodan(true); //izbrisati
-                    Simulacija.carinskiRed.add(this);
+
                     zavrsenaPolicijskaObrada = true;
                 }
 
@@ -83,16 +89,18 @@ public class Autobus extends Vozilo implements AutobusInterfejs {
                     }
 
 
-                    System.out.println(this + ": usao u carinski terminal!");
+                    System.out.println(this + ": usao u carinski terminal 1!");
                     mozeProciCarinskiTerminal = Simulacija.c1.obradiVozilo(this);
                     if(!mozeProciCarinskiTerminal){
                         System.out.println("Pao carinsku provjeru!");
                     }
+                    System.out.println(this + ": izasao iz carinskog terminala 1");
                     Simulacija.c1.setSlobodan(true);
                     zavrsenaCarinskaObrada = true;
                 }
             }
         }
+
     }
 
     @Override
